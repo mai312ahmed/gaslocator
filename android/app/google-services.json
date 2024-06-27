@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "750688308885",
+    "project_id": "gas-locator-9f6c7",
+    "storage_bucket": "gas-locator-9f6c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750688308885:android:0e2caf4e1dd0f9e577959c",
+        "android_client_info": {
+          "package_name": "com.example.gaslocator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2RiIMAeEcTMMKzrWzksumSvIGWnikYJo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
