@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gaslocator/features/registration/domain/entities/request/user_registration_request.dart';
 import 'package:gaslocator/features/registration/domain/repositories/registration_repository.dart';
 import '../../../../core/error/failures.dart';
 part 'registration_state.dart';
@@ -35,7 +38,13 @@ class RegistrationCubit extends Cubit<RegistrationState> {
   FutureOr<void> signupWithEmail() async {
     emit(state.copyWith(status: RegistrationStatus.inProgress));
     Either<Failure, bool> response = await _registrationRepository.signup(
-        email: state.email!, password: state.password!);
+        email: state.email!,
+        password: state.password!,
+        user: UserRegistrationRequest(
+          name: state.userName!,
+          email: state.email!,
+          isClient: state.isClient,
+        ));
     response.fold(
         (failure) => emit(state.copyWith(
             status: RegistrationStatus.failure,
@@ -46,27 +55,21 @@ class RegistrationCubit extends Cubit<RegistrationState> {
 
   void emailChanged(String value) {
     emit(
-      state.copyWith(
-        email: value,
-      ),
+      state.copyWith(email: value, status: RegistrationStatus.initial),
     );
   }
 
   void passwordChanged(String value) {
     final password = value;
     emit(
-      state.copyWith(
-        password: password,
-      ),
+      state.copyWith(password: password, status: RegistrationStatus.initial),
     );
   }
 
   void userNameChanged(String value) {
     final userName = value;
     emit(
-      state.copyWith(
-        userName: userName,
-      ),
+      state.copyWith(userName: userName, status: RegistrationStatus.initial),
     );
   }
 
@@ -74,9 +77,35 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     final confPassword = value;
     emit(
       state.copyWith(
-        confPassword: confPassword,
+          confPassword: confPassword, status: RegistrationStatus.initial),
+    );
+  }
+
+  void setType({required bool isClient}) {
+    emit(
+      state.copyWith(
+        isClient: isClient,
       ),
     );
+  }
+
+  userData() async {
+    final id = FirebaseAuth.instance.currentUser!.uid;
+    CollectionReference ref1 =
+        FirebaseFirestore.instance.collection("view list");
+    ref1.doc(id).set({
+      "owner id": id,
+    });
+    CollectionReference user = FirebaseFirestore.instance.collection("user");
+    user.doc(FirebaseAuth.instance.currentUser!.uid).set({});
+    CollectionReference ref2 = FirebaseFirestore.instance.collection("user");
+    ref2.doc(id).set({
+      "user name": state.userName,
+      "email": state.email,
+      "user type": "customer",
+      "booking": 0,
+      "book timeout": 0,
+    });
   }
 
   bool _isValidEmail(String email) {

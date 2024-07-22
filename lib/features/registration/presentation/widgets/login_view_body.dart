@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gaslocator/config/routes/app_routes.dart';
+import 'package:gaslocator/core/utils/assets_manager.dart';
 import 'package:gaslocator/features/registration/presentation/cubit/registration_cubit.dart';
 import '../../../../core/utils/app_colors.dart';
 import 'custom_text_form.dart';
 import 'general_button.dart';
 import 'have_account_widget.dart';
-import 'logo_image_wedget.dart';
+import 'image_wedget.dart';
 
 class LoginViewBody extends StatelessWidget {
   LoginViewBody({
@@ -18,40 +17,19 @@ class LoginViewBody extends StatelessWidget {
   final GlobalKey<FormState> formState = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: BlocConsumer<RegistrationCubit, RegistrationState>(
-            listener: (context, state) {
-      if (state.status == RegistrationStatus.inProgress) {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return const SpinKitPouringHourGlassRefined(
-                color: Colors.white,
-              );
-            });
-      }
-      if (state.status == RegistrationStatus.failure) {
-        Navigator.pop(context);
-        Fluttertoast.showToast(msg: state.errorMessage);
-      }
-      if (state.status == RegistrationStatus.success) {
-        Navigator.pop(context);
-        Fluttertoast.showToast(msg: "Login successfully");
-        Navigator.pushNamed(context, Routes.ownerSignUp);
-      }
-    }, builder: (BuildContext context, RegistrationState state) {
+    return SafeArea(child: BlocBuilder<RegistrationCubit, RegistrationState>(
+        builder: (BuildContext context, RegistrationState state) {
       return SingleChildScrollView(
         child: Form(
           key: formState,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0).r,
             child: Column(children: [
-              SizedBox(
-                height: 60.h,
+              const ImageWidget(
+                image: ImgAssets.login,
               ),
-              const LogoImageWidget(),
               SizedBox(
-                height: 20.h,
+                height: 100.h,
               ),
               CustomFormField(
                   onChanged: (value) {
@@ -86,7 +64,7 @@ class LoginViewBody extends StatelessWidget {
                       "Forget password?",
                       style: TextStyle(
                         fontSize: 17,
-                        color: AppColors.light,
+                        color: AppColors.lines,
                       ),
                     )),
               ),
@@ -106,7 +84,7 @@ class LoginViewBody extends StatelessWidget {
               ),
               HaveAccountWidget(
                 onPressed: () {
-                  Navigator.pushNamed(context, Routes.chooseRegistrationType);
+                  Navigator.pushNamed(context, Routes.signUp);
                 },
                 registrationType: 'Sign up',
                 text: "Don't have an account?",

@@ -1,4 +1,3 @@
-import 'package:gaslocator/core/api/firebase_consumer.dart';
 import 'package:gaslocator/features/registration/data/datasources/registration_remote_data_source.dart';
 import 'package:gaslocator/features/registration/data/repositories/registration_repository_impl.dart';
 import 'package:gaslocator/features/registration/domain/repositories/registration_repository.dart';
@@ -61,12 +60,11 @@ Future<void> init() async {
   sl.registerLazySingleton<ModeLocalDataSource>(
       () => ModeLocalDataSourceImpl(sharedPreferences: sl()));
   sl.registerLazySingleton<RegistrationRemoteDataSource>(
-      () => RegistrationRemoteDataSourceImpl(firebaseConsumer: sl()));
+      () => RegistrationRemoteDataSourceImpl());
   // Core
   sl.registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImpl(connectionChecker: sl()));
   sl.registerLazySingleton<ApiConsumer>(() => DioConsumer(client: sl()));
-  sl.registerLazySingleton<FirebaseConsumer>(() => FirebaseConsumer());
 
   // External
   final sharedPreferences = await SharedPreferences.getInstance();

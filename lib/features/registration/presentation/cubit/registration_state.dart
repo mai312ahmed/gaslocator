@@ -10,6 +10,7 @@ class RegistrationState extends Equatable {
     this.userName,
     this.confPassword,
     this.isFormValid = false,
+    this.isClient = true,
     this.status = RegistrationStatus.initial,
   });
 
@@ -19,6 +20,7 @@ class RegistrationState extends Equatable {
   final String? password;
   final String? confPassword;
   final bool isFormValid;
+  final bool isClient;
   final RegistrationStatus status;
 
   @override
@@ -29,7 +31,8 @@ class RegistrationState extends Equatable {
         isFormValid,
         userName,
         status,
-        confPassword
+        confPassword,
+        isClient,
       ];
 
   RegistrationState copyWith({
@@ -39,6 +42,7 @@ class RegistrationState extends Equatable {
     String? password,
     String? confPassword,
     bool? isFormValid,
+    bool? isClient,
     RegistrationStatus? status,
   }) {
     return RegistrationState(
@@ -48,6 +52,7 @@ class RegistrationState extends Equatable {
       password: password ?? this.password,
       confPassword: confPassword ?? this.confPassword,
       isFormValid: isFormValid ?? this.isFormValid,
+      isClient: isClient ?? this.isClient,
       status: status ?? this.status,
     );
   }

@@ -76,7 +76,7 @@ class GeneralButtonm extends StatelessWidget {
             decoration: BoxDecoration(
                 border: Border.all(width: 1, color: Colors.black12),
                 borderRadius: BorderRadius.circular(8),
-                color: AppColors.orange,
+                color: AppColors.lines,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black12.withOpacity(.6),
@@ -88,7 +88,7 @@ class GeneralButtonm extends StatelessWidget {
             child: Center(
               child: Text(text,
                   style: TextStyle(
-                      color: AppColors.primary,
+                      color: AppColors.primaryLight,
                       fontSize: 20,
                       fontWeight: FontWeight.w600)),
             )));
@@ -105,7 +105,7 @@ class GeneralButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.orange,
+        backgroundColor: AppColors.primaryDark,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -116,7 +116,7 @@ class GeneralButton extends StatelessWidget {
       onPressed: onTap,
       child: Text(text,
           style: TextStyle(
-              color: AppColors.primary,
+              color: AppColors.primaryLight,
               fontSize: 20,
               fontWeight: FontWeight.w600)),
     );

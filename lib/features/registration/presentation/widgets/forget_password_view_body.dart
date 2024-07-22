@@ -3,7 +3,6 @@ import 'package:gaslocator/config/routes/app_routes.dart';
 import 'package:gaslocator/core/utils/values_manager.dart';
 import 'package:gaslocator/features/registration/presentation/widgets/general_button.dart';
 import 'custom_text_form.dart';
-import 'logo_image_wedget.dart';
 
 class ForgetPassWordViewBody extends StatelessWidget {
   const ForgetPassWordViewBody({
@@ -21,7 +20,6 @@ class ForgetPassWordViewBody extends StatelessWidget {
               const SizedBox(
                 height: 100,
               ),
-              const LogoImageWidget(),
               const SizedBox(
                 height: AppSize.s20,
               ),

@@ -13,10 +13,10 @@ class CustomErrorWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Center(
+        const Center(
           child: Icon(
             Icons.warning_amber_rounded,
-            color: AppColors.primary,
+            color: Colors.red,
             size: 150,
           ),
         ),
@@ -31,7 +31,7 @@ class CustomErrorWidget extends StatelessWidget {
         Text(
           'Please Try Again',
           style: TextStyle(
-              color: AppColors.light,
+              color: AppColors.lines,
               fontSize: 18,
               fontWeight: FontWeight.w500),
         ),
@@ -41,7 +41,7 @@ class CustomErrorWidget extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 15),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
+                backgroundColor: AppColors.primaryLight,
                 foregroundColor: Theme.of(context).primaryColor,
                 elevation: 500,
                 shape: RoundedRectangleBorder(

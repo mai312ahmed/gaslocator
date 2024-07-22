@@ -1,76 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import '../../../../config/routes/app_routes.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gaslocator/config/routes/app_routes.dart';
+import 'package:gaslocator/core/utils/assets_manager.dart';
+import 'package:gaslocator/features/registration/presentation/cubit/registration_cubit.dart';
+import 'package:gaslocator/features/registration/presentation/widgets/user_type_button.dart';
 import '../../../../core/utils/values_manager.dart';
-import '../cubit/registration_cubit.dart';
 import 'custom_text_form.dart';
 import 'general_button.dart';
 import 'have_account_widget.dart';
-import 'logo_image_wedget.dart';
+import 'image_wedget.dart';
 
-class ClientSignupViewBody extends StatelessWidget {
-  ClientSignupViewBody({
+class SignupViewBody extends StatelessWidget {
+  SignupViewBody({
     Key? key,
   }) : super(key: key);
   final GlobalKey<FormState> formState = GlobalKey<FormState>();
-
-  //  adddata()async{
-  //    CollectionReference ref1 = FirebaseFirestore.instance.collection("view list");
-  //    ref1.doc(FirebaseAuth.instance.currentUser!.uid).set({
-  //      "x":null,
-  //      "y":null,
-  //      "owner id":null,
-  //    });
-  //    CollectionReference ref2 = FirebaseFirestore.instance.collection("user");
-  //    ref2.doc(FirebaseAuth.instance.currentUser!.uid).set({
-  //      "user name":myusername,
-  //      "email":myemail,
-  //       "phone NO":myphone,
-  //      "user type": 1,
-  //      "booking":0,
-  //      "book timeout":0,
-  //    });
-  //  }
-  //GlobalKey<FormState> formState= GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: BlocConsumer<RegistrationCubit, RegistrationState>(
-            listener: (context, state) {
-      if (state.status == RegistrationStatus.inProgress) {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return const SpinKitPouringHourGlassRefined(
-                color: Colors.white,
-              );
-            });
-      }
-      if (state.status == RegistrationStatus.failure) {
-        Navigator.pop(context);
-        Fluttertoast.showToast(msg: state.errorMessage);
-      }
-      if (state.status == RegistrationStatus.success) {
-        Navigator.pop(context);
-        Fluttertoast.showToast(msg: "Signup successfully");
-        Navigator.pushNamed(context, Routes.login);
-      }
-    }, builder: (context, state) {
+    return SafeArea(child: BlocBuilder<RegistrationCubit, RegistrationState>(
+        builder: (context, state) {
       return SingleChildScrollView(
         child: Form(
           key: formState,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0).r,
             child: Column(children: [
-              const SizedBox(
-                height: 60,
+              SizedBox(
+                height: 60.h,
               ),
-              const LogoImageWidget(),
-              const SizedBox(
-                height: AppSize.s20,
+              const ImageWidget(
+                image: ImgAssets.signup,
               ),
+              SizedBox(height: 20.h),
+              const TypeSection(),
+              SizedBox(height: 20.h),
               CustomFormField(
                 onChanged: (value) {
                   context.read<RegistrationCubit>().userNameChanged(value);
@@ -123,7 +87,7 @@ class ClientSignupViewBody extends StatelessWidget {
                       : () {
                           if (formState.currentState!.validate()) {
                             BlocProvider.of<RegistrationCubit>(context)
-                                .loginWithEmail();
+                                .signupWithEmail();
                           }
                         },
                   text: 'Sign up',
@@ -141,5 +105,51 @@ class ClientSignupViewBody extends StatelessWidget {
         ),
       );
     }));
+  }
+}
+
+class TypeSection extends StatelessWidget {
+  const TypeSection({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RegistrationCubit, RegistrationState>(
+      builder: (context, state) {
+        return Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFF5F9FF),
+            boxShadow: const [
+              BoxShadow(
+                color: Color.fromARGB(225, 0, 0, 0),
+                offset: Offset(.5, .5),
+              ),
+            ],
+            borderRadius: BorderRadius.circular(150),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              UserTypeButton(
+                selected: state.isClient,
+                onTap: () {
+                  context.read<RegistrationCubit>().setType(isClient: true);
+                },
+                text: 'Client',
+              ),
+              UserTypeButton(
+                selected: !state.isClient,
+                onTap: () {
+                  context.read<RegistrationCubit>().setType(isClient: false);
+                },
+                text: 'Owner',
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

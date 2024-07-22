@@ -75,7 +75,8 @@ class ServerFailure extends Failure {
       case 'account-exists-with-different-credential':
         return const ServerFailure("Account exists with different credential");
       case 'invalid-credential':
-        return const ServerFailure("Invalid credential kkkkkkkkkkk");
+        return const ServerFailure(
+            "The email or password you entered is incurrect");
       case 'invalid-verification-code':
         return const ServerFailure("Invalid verification code");
       case 'invalid-verification-id':

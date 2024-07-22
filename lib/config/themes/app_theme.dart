@@ -6,16 +6,16 @@ import '../../core/utils/values_manager.dart';
 ThemeData appTheme() {
   return ThemeData(
     //main color
-    primaryColor: AppColors.primary,
-    primaryColorDark: AppColors.primary,
-    primaryColorLight: AppColors.primary,
+    primaryColor: AppColors.primaryLight,
+    primaryColorDark: AppColors.primaryDark,
+    primaryColorLight: AppColors.primaryLight,
     disabledColor: Colors.grey,
-    splashColor: AppColors.light, //button shadow
-    hintColor: AppColors.light,
-    scaffoldBackgroundColor: AppColors.primary,
+    splashColor: AppColors.primaryLight, //button shadow
+    hintColor: AppColors.lines,
+    scaffoldBackgroundColor: AppColors.primaryLight,
     fontFamily: AppStrings.fontFamily,
     colorScheme: ColorScheme.fromSwatch(
-      accentColor: AppColors.primary,
+      accentColor: AppColors.primaryLight,
     ),
 
     //cardview theme
@@ -29,15 +29,15 @@ ThemeData appTheme() {
         centerTitle: true,
         color: Colors.transparent,
         elevation: 0,
-        shadowColor: AppColors.light,
+        shadowColor: AppColors.background,
         titleTextStyle: const TextStyle(
             fontWeight: FontWeight.w500, color: Colors.white, fontSize: 20)),
     //button theme
     buttonTheme: ButtonThemeData(
       shape: const StadiumBorder(),
       disabledColor: Colors.grey,
-      buttonColor: AppColors.primary,
-      splashColor: AppColors.light,
+      buttonColor: AppColors.primaryLight,
+      splashColor: AppColors.primaryLight,
     ),
 //elevated button theme
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -46,14 +46,14 @@ ThemeData appTheme() {
             color: Colors.white,
             fontSize: 18,
           ),
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors.primaryLight,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppSize.s12))),
     ),
     //Text theme
     textTheme: TextTheme(
       headlineMedium: TextStyle(
-        color: AppColors.primary,
+        color: AppColors.primaryDark,
       ),
       displayLarge: const TextStyle(
         color: Colors.black26,
@@ -62,32 +62,32 @@ ThemeData appTheme() {
         color: Colors.black26,
       ),
       // titleMedium: TextStyle(color: AppColors.light, fontSize: 16),
-      bodySmall: const TextStyle(
-        color: Color.fromARGB(255, 209, 209, 209),
+      bodySmall: TextStyle(
+        color: AppColors.primaryDark,
       ),
-      bodyLarge: const TextStyle(
-        color: Color.fromARGB(255, 209, 209, 209),
+      bodyLarge: TextStyle(
+        color: AppColors.primaryDark,
       ),
       bodyMedium:
-          TextStyle(color: AppColors.light, fontWeight: FontWeight.bold),
+          TextStyle(color: AppColors.lines, fontWeight: FontWeight.bold),
     ),
     //input decoration theme (textFormField)
     inputDecorationTheme: InputDecorationTheme(
-      iconColor: AppColors.orange,
-      hoverColor: AppColors.orange,
-      prefixIconColor: AppColors.orange,
-      suffixIconColor: AppColors.orange,
-      fillColor: AppColors.transparent,
+      iconColor: AppColors.primaryDark,
+      hoverColor: AppColors.primaryDark,
+      prefixIconColor: AppColors.primaryDark,
+      suffixIconColor: AppColors.primaryDark,
+      fillColor: Colors.white,
       filled: true,
       //content padding
       contentPadding: const EdgeInsets.all(AppPadding.p8),
 //hint style
       hintStyle: TextStyle(
-        color: AppColors.light,
+        color: AppColors.lines,
       ),
 // lable
-      labelStyle: const TextStyle(
-        color: Color.fromARGB(218, 255, 255, 255),
+      labelStyle: TextStyle(
+        color: AppColors.primaryDark,
       ),
 //error style
       errorStyle: const TextStyle(
@@ -101,7 +101,7 @@ ThemeData appTheme() {
 //focus border style
       focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-        color: AppColors.orange,
+        color: AppColors.lines,
         width: 1.5,
       )),
 //error border style
@@ -111,7 +111,7 @@ ThemeData appTheme() {
       ),
 //focus error border style
       focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+        borderSide: BorderSide(color: AppColors.primaryLight, width: 1.5),
         borderRadius: BorderRadius.circular(AppSize.s8),
       ),
     ),

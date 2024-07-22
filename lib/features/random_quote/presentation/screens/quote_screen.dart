@@ -20,7 +20,7 @@ class QuoteScreen extends StatelessWidget {
       if (state is RandomQuoteIsLoading) {
         return Center(
           child: SpinKitFadingCircle(
-            color: AppColors.primary,
+            color: AppColors.primaryLight,
           ),
         );
       } else if (state is RandomQuoteError) {
@@ -41,7 +41,7 @@ class QuoteScreen extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(vertical: 15),
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: AppColors.primary),
+                      shape: BoxShape.circle, color: AppColors.primaryLight),
                   child: const Icon(
                     Icons.refresh,
                     size: 28,
@@ -53,7 +53,7 @@ class QuoteScreen extends StatelessWidget {
       } else {
         return Center(
           child: SpinKitFadingCircle(
-            color: AppColors.primary,
+            color: AppColors.primaryLight,
           ),
         );
       }
@@ -66,7 +66,7 @@ class QuoteScreen extends StatelessWidget {
       leading: IconButton(
         icon: Icon(
           Icons.translate,
-          color: AppColors.primary,
+          color: AppColors.primaryLight,
         ),
         onPressed: () {
           if (AppLocalizations.of(context)!.isEnLocale) {

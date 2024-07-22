@@ -1,52 +1,3 @@
-// import 'package:flutter/material.dart';
-// import '../../../../core/utils/app_colors.dart';
-// import '../../../../core/utils/values_manager.dart';
-
-// class CustomFormField extends StatelessWidget {
-//   const CustomFormField({
-//     Key? key,
-//     required this.onSaved,
-//     required this.validator,
-//     required this.maxLength,
-//     required this.iconData,
-//     this.suffixIcon,
-//     required this.hintText,
-//     required this.label,
-//     this.keyboardType,
-
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         TextFormField(
-//           cursorColor: AppColors.orange,
-//           keyboardType: keyboardType,
-//           onSaved: onSaved,
-//           validator: validator,
-//           maxLength: maxLength,
-//           decoration: InputDecoration(
-// errorText: widget.errorText,
-//             prefixIcon: Icon(
-//               iconData,
-//               size: 30,
-//             ),
-//             suffixIcon: suffixIcon,
-//             hintText: hintText,
-//             label: Text(
-//               label,
-//               style: const TextStyle(fontSize: AppSize.s20),
-//             ),
-//           ),
-//         ),
-//         const SizedBox(
-//           height: AppSize.s4,
-//         )
-//       ],
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
 import 'package:gaslocator/core/utils/app_colors.dart';
 
@@ -109,10 +60,10 @@ class _CustomFormFieldState extends State<CustomFormField> {
           ),
           TextFormField(
             validator: widget.validator,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            // autovalidateMode: AutovalidateMode.onUserInteraction,
             initialValue: widget.initialValue,
             maxLines: widget.isPassword ? 1 : widget.maxLines,
-            cursorColor: AppColors.orange,
+            cursorColor: AppColors.lines,
             keyboardType: widget.keyboardType,
             controller: _controller,
             obscureText: widget.isPassword && _obscureText,
@@ -120,15 +71,16 @@ class _CustomFormFieldState extends State<CustomFormField> {
               errorMaxLines: 2,
               label: Text(
                 widget.label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
+                  color: AppColors.primaryDark,
                 ),
               ),
-              hintStyle: const TextStyle(
+              hintStyle: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
-                color: Color(0xFFCFD2D4),
+                color: AppColors.lines,
               ),
               prefixIcon: Icon(
                 widget.iconData,
@@ -143,7 +95,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                       },
                       child: Icon(
                         _obscureText ? Icons.visibility_off : Icons.visibility,
-                        color: AppColors.orange,
+                        color: AppColors.lines,
                         size: 25,
                       ),
                     )
@@ -158,7 +110,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                   Radius.circular(10),
                 ),
                 borderSide: BorderSide(
-                  color: AppColors.orange,
+                  color: AppColors.lines,
                 ),
               ),
               enabledBorder: const OutlineInputBorder(
@@ -172,7 +124,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                   Radius.circular(10),
                 ),
                 borderSide: BorderSide(
-                  color: AppColors.orange,
+                  color: AppColors.primaryDark,
                 ),
               ),
               errorBorder: const OutlineInputBorder(

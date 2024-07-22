@@ -1,4 +1,5 @@
 import 'package:gaslocator/features/registration/data/datasources/registration_remote_data_source.dart';
+import 'package:gaslocator/features/registration/domain/entities/request/user_registration_request.dart';
 import 'package:gaslocator/features/registration/domain/repositories/registration_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -47,10 +48,12 @@ class RegistrationRepositoryImpl implements RegistrationRepository {
 
   @override
   Future<Either<Failure, bool>> signup(
-      {required String email, required String password}) async {
+      {required String password,
+      required String email,
+      required UserRegistrationRequest user}) async {
     try {
       return right(await registrationRemoteDataSource.signup(
-          email: email, password: password));
+          email: email, password: password, user: user));
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioException(e));
