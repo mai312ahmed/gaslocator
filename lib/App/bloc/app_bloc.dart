@@ -3,20 +3,21 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:gaslocator/core/utils/app_strings.dart';
-import 'package:gaslocator/features/sitting/domain/repositories/lang_repository.dart';
-//import 'package:waseet/features/user/domain/entities/about_us_model.dart';
-// import 'package:waseet/features/user/domain/entities/wasset_user.dart';
-// import 'package:waseet/features/user/domain/repositories/authentication_repository.dart';
-//import 'package:waseet/res/shared_preferences.dart';
+import 'package:gaslocator/features/registration/domain/repositories/init_repository.dart';
+import 'package:gaslocator/features/settings/domain/entities/user_entity.dart';
+import 'package:gaslocator/features/settings/domain/repositories/lang_repository.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
-  AppBloc({
-    required LangRepository langRepository,
-  })  : _langRepository = langRepository,
+  AppBloc(
+      {required LangRepository langRepository,
+      required InitRepository initRepository})
+      : _langRepository = langRepository,
+        _initRepository = initRepository,
         // _authenticationRepository = authenticationRepository,
         super(AppInitial()) {
     on<AppEvent>((event, emit) {});
@@ -30,11 +31,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     add(AppStarted());
   }
   final LangRepository _langRepository;
-
-  //final ChangeLangUseCase changeLangUseCase;
-  // final GetSavedModeUseCase getSavedModeUseCase;
-  // final ChangeModeUseCase changeModeUseCase;
-  // final AuthenticationRepository _authenticationRepository;
+  final InitRepository _initRepository;
 
   FutureOr<void> _appStarted(AppStarted event, Emitter<AppState> emit) async {
     final response = await _langRepository.getSavedLang();
@@ -43,24 +40,20 @@ class AppBloc extends Bloc<AppEvent, AppState> {
             (value) {
       emit(state.copyWith(locale: Locale(value)));
     });
-    // final token = WaseetSharedPreferences.getToken();
 
-    // try {
-    //   if (token != null && token.isNotEmpty) {
-    //     final user = await _authenticationRepository.getUser();
-    //     emit(state.copyWith(user: user.data, status: AppStatus.authenticated));
-    //   } else {
-    //     emit(state.copyWith(status: AppStatus.unauthenticated));
-    //   }
-    // } on Exception catch (e) {
-    //   emit(
-    //     state.copyWith(
-    //       error: e.toString(),
-    //       status: AppStatus.unauthenticated,
-    //     ),
-    //   );
-    //   await WaseetSharedPreferences.setToken('');
-    // }
+    final user = await _initRepository.getSavedUserInfo();
+    user.fold(
+        (failure) => emit(state.copyWith(
+            status: AppStatus.unauthenticated,
+            error: "Failed to fetch data")), (user) {
+      emit(state.copyWith(
+          user: user,
+          status: user!.isAuth
+              ? AppStatus.authenticated
+              : AppStatus.authenticated));
+    });
+
+    FlutterNativeSplash.remove();
   }
 
   FutureOr<void> _appLoggedOut(

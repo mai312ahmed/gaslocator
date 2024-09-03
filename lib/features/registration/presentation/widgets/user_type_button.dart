@@ -18,17 +18,17 @@ class UserTypeButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: ((2.sw) / 5).w,
-        padding: const EdgeInsets.symmetric(vertical: 8),
+        padding: const EdgeInsets.symmetric(vertical: 10).r,
         decoration: BoxDecoration(
-          color: selected ? AppColors.primaryDark : null,
-          borderRadius: BorderRadius.circular(150),
+          color: selected ? AppColors.primary : null,
+          borderRadius: BorderRadius.circular(50).r,
         ),
         child: Center(
           child: Text(
             text,
             style: TextStyle(
-              color: selected ? Colors.white : AppColors.primaryDark,
-              fontSize: 14.sp,
+              color: selected ? Colors.white : AppColors.primary,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w600,
             ),
           ),

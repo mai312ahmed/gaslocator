@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../core/utils/app_colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gaslocator/core/utils/app_colors.dart';
 
 class HaveAccountWidget extends StatelessWidget {
   const HaveAccountWidget({
@@ -14,18 +15,22 @@ class HaveAccountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           text,
-          style: const TextStyle(fontSize: 17),
+          style: TextStyle(
+            fontSize: 18.sp,
+            color: AppColors.secondartyLines,
+          ),
         ),
         TextButton(
             onPressed: onPressed,
             child: Text(
               registrationType,
               style: TextStyle(
-                  fontSize: 17,
-                  color: AppColors.lines,
+                  fontSize: 18.sp,
+                  color: AppColors.items,
                   fontWeight: FontWeight.bold),
             ))
       ],

@@ -2,7 +2,7 @@
     <application
         android:label="gaslocator"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/splash">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -29,5 +29,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyDhJgcoaGD7Iioxyjgmao9M8R9V7JMnpWA"/>
     </application>
 </manifest>

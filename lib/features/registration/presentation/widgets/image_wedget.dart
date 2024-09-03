@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gaslocator/core/utils/media_query_values.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImageWidget extends StatelessWidget {
   const ImageWidget({
@@ -11,7 +11,7 @@ class ImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.asset(
       image,
-      height: context.width / 2,
+      height: 1.sh / 4,
     );
   }
 }

@@ -5,7 +5,7 @@ enum AppStatus { authenticated, unauthenticated }
 class AppState extends Equatable {
   const AppState(
       {this.status = AppStatus.unauthenticated,
-      // this.user,
+      this.user,
       this.error,
       this.isOpen = false,
       this.isOwner = true,
@@ -13,7 +13,7 @@ class AppState extends Equatable {
       this.locale = const Locale(AppStrings.englishCode)});
 
   final AppStatus status;
-  //final AppUser? user;
+  final UserEntity? user;
   final String? error;
   final bool isOpen;
   final bool isOwner;
@@ -28,7 +28,7 @@ class AppState extends Equatable {
 
   AppState copyWith({
     AppStatus? status,
-    // AppUser? user,
+    UserEntity? user,
     String? error,
     bool? isOpen,
     bool? isOwner,
@@ -37,7 +37,7 @@ class AppState extends Equatable {
   }) {
     return AppState(
       status: status ?? this.status,
-      //   user: user ?? this.user,
+      user: user ?? this.user,
       error: error ?? this.error,
       isOpen: isOpen ?? this.isOpen,
       isOwner: isOwner ?? this.isOwner,

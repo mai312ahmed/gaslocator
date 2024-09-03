@@ -1,296 +1,183 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 
-class Test extends StatelessWidget {
-  const Test({super.key});
+class RotatingCube extends StatefulWidget {
+  const RotatingCube({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-        baseColor: const Color.fromARGB(255, 127, 126, 126),
-        highlightColor: const Color.fromARGB(255, 236, 235, 235),
-        child: const ConsultingRequestCard());
-  }
+  RotatingCubeState createState() => RotatingCubeState();
 }
 
-class CategoryCardShimmer extends StatelessWidget {
-  const CategoryCardShimmer({super.key});
+class RotatingCubeState extends State<RotatingCube>
+    with SingleTickerProviderStateMixin {
+  bool _showFrontSide = true;
+  late AnimationController _controller;
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: Colors.grey.shade300,
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          //crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  height: 25,
-                  width: MediaQuery.sizeOf(context).width / 4,
-                  decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  height: 25,
-                  width: MediaQuery.sizeOf(context).width / 3,
-                  decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-                const CircleAvatar(
-                  radius: 30,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 25,
-              width: MediaQuery.sizeOf(context).width * 3 / 4,
-              decoration: BoxDecoration(
-                  color: Colors.amber, borderRadius: BorderRadius.circular(8)),
-            ),
-          ],
-        ),
-      ),
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
     );
   }
-}
 
-class ConsultantCard extends StatelessWidget {
-  const ConsultantCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: Colors.grey.shade300,
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  height: 25,
-                  width: MediaQuery.sizeOf(context).width / 4,
-                  decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-                Row(
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 25,
-                          width: MediaQuery.sizeOf(context).width / 3,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 25,
-                          width: MediaQuery.sizeOf(context).width / 4,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                      ],
-                    ),
-                    const CircleAvatar(
-                      radius: 30,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 25,
-              width: MediaQuery.sizeOf(context).width * 3 / 4,
-              decoration: BoxDecoration(
-                  color: Colors.amber, borderRadius: BorderRadius.circular(8)),
-            ),
-          ],
-        ),
-      ),
-    );
+  void _toggleCube() {
+    if (_showFrontSide) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
+    setState(() {
+      _showFrontSide = !_showFrontSide;
+    });
   }
-}
-
-class ConsultingCard extends StatelessWidget {
-  const ConsultingCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: Colors.grey.shade300,
-          ),
-        ),
+    return Scaffold(
+      body: GestureDetector(
+        onTap: _toggleCube,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  height: 20,
-                  width: MediaQuery.sizeOf(context).width / 4,
-                  decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(8)),
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY(_controller.value * 3.14),
+                      child: _controller.value <= 0.5
+                          ? _buildFront()
+                          : _buildBack(),
+                    );
+                  },
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 20,
-                          width: MediaQuery.sizeOf(context).width / 3,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 20,
-                          width: MediaQuery.sizeOf(context).width / 6,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 20,
-                          width: MediaQuery.sizeOf(context).width / 2.5,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              height: 20,
-                              width: MediaQuery.sizeOf(context).width / 6,
-                              decoration: BoxDecoration(
-                                  color: Colors.amber,
-                                  borderRadius: BorderRadius.circular(8)),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              height: 20,
-                              width: MediaQuery.sizeOf(context).width / 6,
-                              decoration: BoxDecoration(
-                                  color: Colors.amber,
-                                  borderRadius: BorderRadius.circular(8)),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 20,
-                          width: MediaQuery.sizeOf(context).width / 9,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                      ],
-                    ),
-                    const CircleAvatar(
-                      radius: 30,
-                    ),
-                  ],
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY(_controller.value * 3.14),
+                      child: _controller.value <= 0.5
+                          ? _buildFront()
+                          : _buildBack(),
+                    );
+                  },
+                ),
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY(_controller.value * 3.14),
+                      child: _controller.value <= 0.5
+                          ? _buildFront()
+                          : _buildBack(),
+                    );
+                  },
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY(_controller.value * 3.14),
+                      child: _controller.value <= 0.5
+                          ? _buildFront()
+                          : _buildBack(),
+                    );
+                  },
+                ),
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY(_controller.value * 3.14),
+                      child: _controller.value <= 0.5
+                          ? _buildFront()
+                          : _buildBack(),
+                    );
+                  },
+                ),
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY(_controller.value * 3.14),
+                      child: _controller.value <= 0.5
+                          ? _buildFront()
+                          : _buildBack(),
+                    );
+                  },
+                ),
+              ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  height: 30,
-                  width: MediaQuery.sizeOf(context).width / 3.5,
-                  decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(8)),
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY(_controller.value * 3.14),
+                      child: _controller.value <= 0.5
+                          ? _buildFront()
+                          : _buildBack(),
+                    );
+                  },
                 ),
-                const SizedBox(
-                  width: 30,
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY(_controller.value * 3.14),
+                      child: _controller.value <= 0.5
+                          ? _buildFront()
+                          : _buildBack(),
+                    );
+                  },
                 ),
-                Container(
-                  height: 30,
-                  width: MediaQuery.sizeOf(context).width / 3.5,
-                  decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(8)),
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY(_controller.value * 3.14),
+                      child: _controller.value <= 0.5
+                          ? _buildFront()
+                          : _buildBack(),
+                    );
+                  },
                 ),
               ],
             ),
@@ -299,114 +186,36 @@ class ConsultingCard extends StatelessWidget {
       ),
     );
   }
-}
 
-class ConsultingRequestCard extends StatelessWidget {
-  const ConsultingRequestCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: Colors.grey.shade300,
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  height: 20,
-                  width: MediaQuery.sizeOf(context).width / 4,
-                  decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 20,
-                          width: MediaQuery.sizeOf(context).width / 3,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 20,
-                          width: MediaQuery.sizeOf(context).width / 2.5,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 20,
-                          width: MediaQuery.sizeOf(context).width / 6,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 20,
-                          width: MediaQuery.sizeOf(context).width / 9,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                      ],
-                    ),
-                    const CircleAvatar(
-                      radius: 30,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 30,
-                  width: MediaQuery.sizeOf(context).width / 1.2,
-                  decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-              ],
-            ),
-          ],
-        ),
+  Widget _buildFront() {
+    return Container(
+      width: 100,
+      height: 200,
+      color: Colors.blue,
+      alignment: Alignment.center,
+      child: const Text(
+        'Front',
+        style: TextStyle(color: Colors.white, fontSize: 24),
       ),
     );
+  }
+
+  Widget _buildBack() {
+    return Container(
+      width: 100,
+      height: 200,
+      color: Colors.red,
+      alignment: Alignment.center,
+      child: const Text(
+        'X',
+        style: TextStyle(color: Colors.white, fontSize: 24),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

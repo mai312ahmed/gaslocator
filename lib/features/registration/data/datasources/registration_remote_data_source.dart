@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gaslocator/enums/center_status.dart';
 import 'package:gaslocator/features/registration/domain/entities/request/user_registration_request.dart';
 
 abstract class RegistrationRemoteDataSource {
@@ -25,7 +26,39 @@ class RegistrationRemoteDataSourceImpl implements RegistrationRemoteDataSource {
         .doc(id)
         .set(user.isClient ? user.toClientMap() : user.toOwnerMap());
     if (!user.isClient) {
-      await FirebaseFirestore.instance.collection("office").doc(id).set({});
+      List gases = [
+        "Abarsi",
+        "Ajeb",
+        "Alnehla",
+        "Alneil",
+        "Alterifi",
+        "Alwatania",
+        "Aman",
+        "Benta",
+        "Iran",
+        "Gadra",
+        "Sodagas",
+        "Sondos"
+      ];
+      List gas = [];
+      for (int i = 0; i < gases.length; i++) {
+        gas.add({
+          "name": gases[i],
+          "available quantity": 0,
+          "is exist": false,
+          "booked quantity": 0,
+          "id": i + 1
+        });
+      }
+      FirebaseFirestore.instance.collection("centers").doc(id).set({
+        "center name": "",
+        "location": [null, null],
+        "gas": gas,
+        "cancel": 4,
+        "status": CenterStatus.close.name,
+        "phone number": null,
+        "owner id": id,
+      });
     }
     return true;
   }

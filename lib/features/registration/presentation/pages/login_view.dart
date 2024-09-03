@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaslocator/App/bloc/app_bloc.dart';
 import 'package:gaslocator/config/routes/app_routes.dart';
 import 'package:gaslocator/core/widgets/helper_method.dart';
+import 'package:gaslocator/enums/user_type.dart';
 import 'package:gaslocator/features/registration/presentation/cubit/registration_cubit.dart';
 import '../../../../config/locale/app_localizations.dart';
 import '../../../../core/utils/app_colors.dart';
@@ -44,7 +45,12 @@ class LoginView extends StatelessWidget {
                   "Login successfully",
                   type: SnackBarType.success,
                 );
-                Navigator.pushNamed(context, Routes.signUp);
+                context.read<AppBloc>().add(AppStarted());
+                Navigator.pushNamed(
+                    context,
+                    state.user!.type == UserType.owner.name
+                        ? Routes.ownerHome
+                        : Routes.clientHome);
               }
             },
             child: LoginViewBody(),

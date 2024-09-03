@@ -23,13 +23,32 @@ class LoginViewBody extends StatelessWidget {
         child: Form(
           key: formState,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0).r,
+            padding: const EdgeInsets.all(20).r,
             child: Column(children: [
               const ImageWidget(
                 image: ImgAssets.login,
               ),
               SizedBox(
-                height: 100.h,
+                height: 30.h,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text('Login',
+                    style: TextStyle(
+                        color: AppColors.primary,
+                        fontSize: 52.sp,
+                        fontWeight: FontWeight.bold)),
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text('Please Sign in to continue',
+                    style: TextStyle(
+                        color: AppColors.primary,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold)),
+              ),
+              SizedBox(
+                height: 10.h,
               ),
               CustomFormField(
                   onChanged: (value) {
@@ -39,8 +58,8 @@ class LoginViewBody extends StatelessWidget {
                   validator: context.read<RegistrationCubit>().emailValidation,
                   hintText: "Enter your email",
                   label: "Email"),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 20.h,
               ),
               CustomFormField(
                 onChanged: (value) {
@@ -53,6 +72,9 @@ class LoginViewBody extends StatelessWidget {
                 suffixIcon: const Icon(Icons.visibility),
                 validator: context.read<RegistrationCubit>().passwordValidation,
               ),
+              SizedBox(
+                height: 5.h,
+              ),
               Align(
                 alignment: Alignment.topLeft,
                 child: TextButton(
@@ -63,10 +85,13 @@ class LoginViewBody extends StatelessWidget {
                     child: Text(
                       "Forget password?",
                       style: TextStyle(
-                        fontSize: 17,
-                        color: AppColors.lines,
+                        fontSize: 16.sp,
+                        color: AppColors.primary,
                       ),
                     )),
+              ),
+              SizedBox(
+                height: 10.h,
               ),
               SizedBox(
                 width: double.infinity,
@@ -82,9 +107,12 @@ class LoginViewBody extends StatelessWidget {
                   text: 'Login',
                 ),
               ),
+              SizedBox(
+                height: 10.h,
+              ),
               HaveAccountWidget(
                 onPressed: () {
-                  Navigator.pushNamed(context, Routes.signUp);
+                  Navigator.pushReplacementNamed(context, Routes.signUp);
                 },
                 registrationType: 'Sign up',
                 text: "Don't have an account?",

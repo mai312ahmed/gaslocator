@@ -1,19 +1,22 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaslocator/features/registration/domain/entities/request/user_registration_request.dart';
+import 'package:gaslocator/features/registration/domain/repositories/init_repository.dart';
 import 'package:gaslocator/features/registration/domain/repositories/registration_repository.dart';
+import 'package:gaslocator/features/settings/domain/entities/user_entity.dart';
 import '../../../../core/error/failures.dart';
 part 'registration_state.dart';
 
 class RegistrationCubit extends Cubit<RegistrationState> {
   final RegistrationRepository _registrationRepository;
-
-  RegistrationCubit({required RegistrationRepository registrationRepository})
+  final InitRepository _initRepository;
+  RegistrationCubit(
+      {required RegistrationRepository registrationRepository,
+      required InitRepository initRepository})
       : _registrationRepository = registrationRepository,
+        _initRepository = initRepository,
         super(const RegistrationInitial());
 
   FutureOr<void> loginWithEmail() async {
@@ -23,9 +26,15 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     response.fold(
         (failure) => emit(state.copyWith(
             status: RegistrationStatus.failure,
-            errorMessage: failure.errorMessages)), (value) {
+            errorMessage: failure.errorMessages)), (value) async {
       if (value == true) {
-        emit(state.copyWith(status: RegistrationStatus.success));
+        final user = await _initRepository.getSavedUserInfo();
+        user.fold(
+            (failure) => emit(state.copyWith(
+                status: RegistrationStatus.failure,
+                errorMessage: "Failed to fetch data")), (user) {
+          emit(state.copyWith(status: RegistrationStatus.success, user: user));
+        });
       } else {
         emit(state.copyWith(
             status: RegistrationStatus.failure,
@@ -87,25 +96,6 @@ class RegistrationCubit extends Cubit<RegistrationState> {
         isClient: isClient,
       ),
     );
-  }
-
-  userData() async {
-    final id = FirebaseAuth.instance.currentUser!.uid;
-    CollectionReference ref1 =
-        FirebaseFirestore.instance.collection("view list");
-    ref1.doc(id).set({
-      "owner id": id,
-    });
-    CollectionReference user = FirebaseFirestore.instance.collection("user");
-    user.doc(FirebaseAuth.instance.currentUser!.uid).set({});
-    CollectionReference ref2 = FirebaseFirestore.instance.collection("user");
-    ref2.doc(id).set({
-      "user name": state.userName,
-      "email": state.email,
-      "user type": "customer",
-      "booking": 0,
-      "book timeout": 0,
-    });
   }
 
   bool _isValidEmail(String email) {

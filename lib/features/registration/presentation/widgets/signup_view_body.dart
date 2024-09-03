@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gaslocator/config/routes/app_routes.dart';
+import 'package:gaslocator/core/utils/app_colors.dart';
 import 'package:gaslocator/core/utils/assets_manager.dart';
 import 'package:gaslocator/features/registration/presentation/cubit/registration_cubit.dart';
 import 'package:gaslocator/features/registration/presentation/widgets/user_type_button.dart';
-import '../../../../core/utils/values_manager.dart';
 import 'custom_text_form.dart';
 import 'general_button.dart';
 import 'have_account_widget.dart';
@@ -24,15 +24,25 @@ class SignupViewBody extends StatelessWidget {
         child: Form(
           key: formState,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0).r,
+            padding: const EdgeInsets.symmetric(horizontal: 20).r,
             child: Column(children: [
               SizedBox(
-                height: 60.h,
+                height: 40.h,
               ),
               const ImageWidget(
                 image: ImgAssets.signup,
               ),
-              SizedBox(height: 20.h),
+              SizedBox(
+                height: 20.h,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text('Registration',
+                    style: TextStyle(
+                        color: AppColors.primary,
+                        fontSize: 41.sp,
+                        fontWeight: FontWeight.bold)),
+              ),
               const TypeSection(),
               SizedBox(height: 20.h),
               CustomFormField(
@@ -44,6 +54,7 @@ class SignupViewBody extends StatelessWidget {
                 hintText: "Enter your name",
                 label: "User name",
               ),
+              SizedBox(height: 20.h),
               CustomFormField(
                   onChanged: (value) {
                     context.read<RegistrationCubit>().emailChanged(value);
@@ -52,6 +63,7 @@ class SignupViewBody extends StatelessWidget {
                   validator: context.read<RegistrationCubit>().emailValidation,
                   hintText: "Enter your email",
                   label: "Email"),
+              SizedBox(height: 20.h),
               CustomFormField(
                 onChanged: (value) {
                   context.read<RegistrationCubit>().passwordChanged(value);
@@ -63,6 +75,7 @@ class SignupViewBody extends StatelessWidget {
                 suffixIcon: const Icon(Icons.visibility),
                 validator: context.read<RegistrationCubit>().passwordValidation,
               ),
+              SizedBox(height: 20.h),
               CustomFormField(
                 onChanged: (value) {
                   context.read<RegistrationCubit>().confasswordChanged(value);
@@ -76,8 +89,8 @@ class SignupViewBody extends StatelessWidget {
                     .passwordMatchingValidation,
                 suffixIcon: const Icon(Icons.visibility),
               ),
-              const SizedBox(
-                height: AppSize.s20,
+              SizedBox(
+                height: 20.h,
               ),
               SizedBox(
                 width: double.infinity,
@@ -92,6 +105,9 @@ class SignupViewBody extends StatelessWidget {
                         },
                   text: 'Sign up',
                 ),
+              ),
+              SizedBox(
+                height: 10.h,
               ),
               HaveAccountWidget(
                 onPressed: () {
@@ -119,14 +135,14 @@ class TypeSection extends StatelessWidget {
       builder: (context, state) {
         return Container(
           decoration: BoxDecoration(
-            color: const Color(0xFFF5F9FF),
+            color: AppColors.background,
             boxShadow: const [
               BoxShadow(
-                color: Color.fromARGB(225, 0, 0, 0),
-                offset: Offset(.5, .5),
-              ),
+                  color: Color.fromARGB(158, 0, 0, 0),
+                  offset: Offset(2, 2),
+                  blurRadius: 2),
             ],
-            borderRadius: BorderRadius.circular(150),
+            borderRadius: BorderRadius.circular(50).r,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -137,7 +153,7 @@ class TypeSection extends StatelessWidget {
                 onTap: () {
                   context.read<RegistrationCubit>().setType(isClient: true);
                 },
-                text: 'Client',
+                text: 'Customer',
               ),
               UserTypeButton(
                 selected: !state.isClient,

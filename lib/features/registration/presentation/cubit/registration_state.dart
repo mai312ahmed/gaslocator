@@ -12,6 +12,7 @@ class RegistrationState extends Equatable {
     this.isFormValid = false,
     this.isClient = true,
     this.status = RegistrationStatus.initial,
+    this.user,
   });
 
   final String errorMessage;
@@ -22,6 +23,7 @@ class RegistrationState extends Equatable {
   final bool isFormValid;
   final bool isClient;
   final RegistrationStatus status;
+  final UserEntity? user;
 
   @override
   List<Object?> get props => [
@@ -33,6 +35,7 @@ class RegistrationState extends Equatable {
         status,
         confPassword,
         isClient,
+        user,
       ];
 
   RegistrationState copyWith({
@@ -44,10 +47,12 @@ class RegistrationState extends Equatable {
     bool? isFormValid,
     bool? isClient,
     RegistrationStatus? status,
+    UserEntity? user,
   }) {
     return RegistrationState(
       errorMessage: errorMessage ?? this.errorMessage,
       email: email ?? this.email,
+      user: user ?? this.user,
       userName: userName ?? this.userName,
       password: password ?? this.password,
       confPassword: confPassword ?? this.confPassword,

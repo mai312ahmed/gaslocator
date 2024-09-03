@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gaslocator/core/utils/media_query_values.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../config/locale/app_localizations.dart';
-import '../utils/app_colors.dart';
 
 class CustomErrorWidget extends StatelessWidget {
   final VoidCallback? onPress;
@@ -28,20 +27,20 @@ class CustomErrorWidget extends StatelessWidget {
                 color: Colors.black, fontSize: 20, fontWeight: FontWeight.w700),
           ),
         ),
-        Text(
+        const Text(
           'Please Try Again',
           style: TextStyle(
-              color: AppColors.lines,
+              //  color: AppColors.lines,
               fontSize: 18,
               fontWeight: FontWeight.w500),
         ),
         Container(
           height: 55,
-          width: context.width * 0.55,
+          width: 1.sw * 0.55,
           margin: const EdgeInsets.symmetric(vertical: 15),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryLight,
+                backgroundColor: Colors.white,
                 foregroundColor: Theme.of(context).primaryColor,
                 elevation: 500,
                 shape: RoundedRectangleBorder(
