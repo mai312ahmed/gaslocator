@@ -1,8 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaslocator/App/bloc/app_bloc.dart';
+import 'package:gaslocator/core/utils/app_colors.dart';
 import 'package:gaslocator/core/utils/assets_manager.dart';
+import 'package:gaslocator/features/owner%20part/direct%20sale/presentation/page/direct_sale_view.dart';
+import 'package:gaslocator/features/owner%20part/manage%20bookings/presentation/page/manage_booking_view.dart';
 import 'package:gaslocator/features/owner%20part/my%20center/presentation/pages/mycenter_view.dart';
 
 class MainLayout extends StatefulWidget {
@@ -13,20 +15,13 @@ class MainLayout extends StatefulWidget {
 }
 
 List<Widget> mainpages = [
-  GestureDetector(
-    onTap: () async {
-      await FirebaseAuth.instance.signOut();
-      //Navigator.pushNamed(context, Routes.login)
-    },
-    child: const Center(
-      child: Text("بيع مباشر"),
-    ),
+  const Center(
+    child: DirectSaleView(),
   ),
   const Center(
-    child: Text("ادارة الحجوزات"),
+    child: ManageBookingView(),
   ),
   const MyCenterView()
-  // const MyFavConnectionRequestPage(),
 ];
 
 class _MainLayoutState extends State<MainLayout> {
@@ -38,10 +33,10 @@ class _MainLayoutState extends State<MainLayout> {
         return Scaffold(
           body: mainpages[currentIndex],
           bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: Colors.white,
+            backgroundColor: AppColors.background,
             currentIndex: currentIndex,
             type: BottomNavigationBarType.fixed,
-            selectedItemColor: Colors.black,
+            selectedItemColor: AppColors.primary,
             onTap: (index) => setState(() {
               currentIndex = index;
             }),

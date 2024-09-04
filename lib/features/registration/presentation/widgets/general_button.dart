@@ -17,7 +17,7 @@ class GeneralButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(50).r,
         ),
         padding: const EdgeInsets.symmetric(
-          vertical: 12,
+          vertical: 5,
         ).r,
       ),
       onPressed: onTap,

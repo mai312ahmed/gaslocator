@@ -6,7 +6,6 @@ import 'package:gaslocator/features/owner%20part/center%20settings/presentation/
 class MyStockListItem extends StatelessWidget {
   const MyStockListItem({
     super.key,
-    //ccn
     required this.title,
     required this.subTitle,
     required this.onTap,
@@ -36,7 +35,8 @@ class MyStockListItem extends StatelessWidget {
             horizontal: 15,
           ).r,
           onTap: () {
-            customShowBottomSheet(context, lable: title, onSavePressed: () {
+            customShowBottomSheet(context, lable: "Add $title Stock with ",
+                onSavePressed: () {
               onTap;
             },
                 onChanged: (value) {},
@@ -56,9 +56,22 @@ class MyStockListItem extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: AppColors.primary),
           ),
-          subtitle: Text(
-            subTitle,
-            style: TextStyle(fontSize: 17.sp, color: AppColors.primary),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "all gas : $subTitle",
+                style: TextStyle(fontSize: 17.sp, color: AppColors.primary),
+              ),
+              Text(
+                "Available : $subTitle",
+                style: TextStyle(fontSize: 17.sp, color: AppColors.primary),
+              ),
+              Text(
+                "Booked : $subTitle",
+                style: TextStyle(fontSize: 17.sp, color: AppColors.primary),
+              ),
+            ],
           ),
           trailing: Icon(
             Icons.edit,

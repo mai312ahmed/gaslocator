@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaslocator/App/bloc/app_bloc.dart';
 import 'package:gaslocator/App/view/main_layout.dart';
 import 'package:gaslocator/core/utils/app_strings.dart';
-import 'package:gaslocator/core/widgets/onboarding.dart';
 import 'package:gaslocator/enums/user_type.dart';
 import 'package:gaslocator/features/client/home/presentation/cubits/home_cubit.dart';
 import 'package:gaslocator/features/client/home/presentation/pages/home_view.dart';
 import 'package:gaslocator/features/owner%20part/center%20settings/presentation/center%20settings%20cubit/center_settings_cubit.dart';
 import 'package:gaslocator/features/owner%20part/center%20settings/presentation/pages/center_settings_view.dart';
+import 'package:gaslocator/features/owner%20part/manage%20bookings/presentation/cubit/manage_booking_cubit.dart';
+import 'package:gaslocator/features/owner%20part/manage%20bookings/presentation/page/manage_booking_view.dart';
 import 'package:gaslocator/features/owner%20part/my%20account/presentation/my%20acoubt%20cubit/myaccount_cubit.dart';
 import 'package:gaslocator/features/owner%20part/my%20account/presentation/pages/myaccount_view.dart';
 import 'package:gaslocator/features/owner%20part/my%20center/presentation/pages/mystock_view.dart';
@@ -97,6 +98,13 @@ class AppRoutes {
                   create: (context) => di.sl<MyAccountCubit>(),
                   child: const MyAccountView(),
                 )));
+      case Routes.manageBooking:
+        return MaterialPageRoute(
+            builder: ((context) => BlocProvider(
+                  create: (context) => di.sl<ManageBookingCubit>(),
+                  child: const ManageBookingView(),
+                )));
+
       case Routes.clientHome:
         return MaterialPageRoute(
             builder: ((context) => BlocProvider(

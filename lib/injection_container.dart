@@ -1,5 +1,7 @@
 import 'package:gaslocator/features/client/home/presentation/cubits/home_cubit.dart';
 import 'package:gaslocator/features/owner%20part/center%20settings/presentation/center%20settings%20cubit/center_settings_cubit.dart';
+import 'package:gaslocator/features/owner%20part/direct%20sale/presentation/cubit/direct_sale_cubit.dart';
+import 'package:gaslocator/features/owner%20part/manage%20bookings/presentation/cubit/manage_booking_cubit.dart';
 import 'package:gaslocator/features/owner%20part/my%20account/presentation/my%20acoubt%20cubit/myaccount_cubit.dart';
 import 'package:gaslocator/features/owner%20part/my%20center/presentation/cubit/my_center_cubit.dart';
 import 'package:gaslocator/features/registration/data/datasources/init_remote_data_source.dart';
@@ -35,8 +37,11 @@ Future<void> init() async {
       ));
   sl.registerFactory<MyCenterCubit>(() => MyCenterCubit());
   sl.registerFactory<MyAccountCubit>(() => MyAccountCubit());
+  sl.registerFactory<ManageBookingCubit>(() => ManageBookingCubit());
   sl.registerFactory<ClientHomeCubit>(() => ClientHomeCubit());
   sl.registerFactory<CenterSettingsCubit>(() => CenterSettingsCubit());
+  sl.registerFactory<DirectSaleCubit>(() => DirectSaleCubit());
+
   // Use cases
 
   // sl.registerLazySingleton<PasswordUseCase>(
